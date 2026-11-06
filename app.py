@@ -5,29 +5,27 @@ from torchvision import transforms, models
 from PIL import Image
 import pandas as pd
 import os
-import gdown
+import urllib.request
 from PIL import ImageFile
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-# --- СКАЧИВАНИЕ МОДЕЛЕЙ С GOOGLE ДИСКА (через gdown) ---
+# --- СКАЧИВАНИЕ МОДЕЛЕЙ С HUGGING FACE ---
 def download_models():
-    # ВСТАВЬТЕ ВАШИ ID (без кавычек, только набор букв/цифр)
     urls = {
-        "pneumonia_model_covid_final.pth": "18ZvC2AF1s5pyW4yjN0iYd59Xtxhf_Gy",
-        "bones_model_final.pth": "1pSWEJVCO3icbW49E0KZpclVSk8_7aJ5",
-        "mri_model_perfect.pth": "1nr_f3KWkZ0Z3YfPF1kkl_owSvwN19wI"
+        "pneumonia_model_covid_final.pth": "https://huggingface.co/Kisama0/MedAI-Models/resolve/main/pneumonia_model_covid_final.pth",
+        "bones_model_final.pth": "https://huggingface.co/Kisama0/MedAI-Models/resolve/main/bones_model_final.pth",
+        "mri_model_perfect.pth": "https://huggingface.co/Kisama0/MedAI-Models/resolve/main/mri_model_perfect.pth"
     }
     
-    for filename, file_id in urls.items():
+    for filename, url in urls.items():
         if not os.path.exists(filename):
             print(f"Скачиваем {filename}...")
-            url = f"https://drive.google.com/uc?id={file_id}"
-            gdown.download(url, filename, quiet=False)
+            urllib.request.urlretrieve(url, filename)
             print(f"{filename} скачан!")
 
 download_models()
-# -----------------------------------------------------------
+# ------------------------------------------
 
 st.set_page_config(
     page_title="MedAI Pro | Диагностика",
